@@ -1,11 +1,16 @@
 from mimetypes import init
 
+##to do: think about if the key or the plaintext has a space
 def vigenere_cipher():
     ##get a key
-    key = input("What is the key? > ")
-    full_key = key
+    key = input("What is the key? > ").lower()
     ##get a user generated plaintext to encode
-    plain_text = input("What is your message? > ")
+    plain_text = input("What is your message? > ").lower()
+
+    ##get rid of the spaces in both the key and the plaintext
+    plain_text = plain_text.replace(" ", "")
+    key = key.replace(" ", "")
+    full_key = key
 
     ##create a new key that repeats itself until the length matches plaintext
     ##create an alphabet variable
@@ -34,7 +39,7 @@ def vigenere_cipher():
     ##added to the index of the new key value at the same index of og letter
     return cipher_text
 
-# print(vigenere_cipher())
+print(vigenere_cipher())
 
 def shift_cipher():
     ##ask the user for something to encode
