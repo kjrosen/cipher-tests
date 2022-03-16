@@ -15,7 +15,13 @@ def shift_cipher():
     ##match each character with its alphabet letter
     ##find the index for letter
     ##add the value at the index + shift to the code variable
-    pass
+    for char in plain_text:
+        letter = alphabet.index(char)
+        cipher_text += alphabet[letter + shift]
+    
+    return cipher_text
+
+print(shift_cipher())
 
 def calculator():
     num1 = input("What's the first number? > ")
