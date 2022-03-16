@@ -1,5 +1,22 @@
 from mimetypes import init
 
+def shift_cipher():
+    ##ask the user for something to encode
+    ##ask them for how shifted it should be
+    plain_text = input("What is your secret message? > ")
+    shift = int(input("How shifted is the cipher? > "))
+    
+    ##create a coded variable
+    ##create an alphabet variable
+    cipher_text = ""
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+    ##iterate through the input text
+    ##match each character with its alphabet letter
+    ##find the index for letter
+    ##add the value at the index + shift to the code variable
+    pass
+
 def calculator():
     num1 = input("What's the first number? > ")
     
@@ -33,4 +50,4 @@ def calculator():
     elif fun == "/":
         return num1 / num2
 
-print(calculator())
+# print(calculator())
