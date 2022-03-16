@@ -5,16 +5,15 @@ def vigenere_cipher():
     key = input("What is the key? > ")
     ##get a user generated plaintext to encode
 
-    ##create an alphabet variable
-    ##create a cipher text list
     ##create a new key that repeats itself until the length matches plaintext
+    ##create an alphabet variable
+    ##note the alphabet index for each letter in the plaintext
+    ##note the new key value for each plaintext index
+    ##note the alphabet index for each value in the key
 
-    ##iterate through the plaintext
-    ##add the index of the letter from the plaintext to [0] 
-    ## and letter of alphabet to [1] 
-    ## - combine into a tuple and add to cipher list
-
-    ##create a cipher text string
+    ##replace each letter of the plaintext
+    ##with the value at the index of its index added ...
+    ##added to the index of the new key value at the same index of og letter
     pass
 
 def shift_cipher():
