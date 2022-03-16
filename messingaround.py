@@ -11,9 +11,9 @@ def vigenere_cipher():
     ##create an alphabet variable
     while len(full_key) < len(plain_text):
         full_key += key
-    print(full_key)
+
     alphabet = "abcdefghijklmnopqrstuvwxyz"
-    print(full_key)
+
     alpha_index = []
     key_index = []
     i = 0
@@ -34,7 +34,7 @@ def vigenere_cipher():
     ##added to the index of the new key value at the same index of og letter
     return cipher_text
 
-print(vigenere_cipher())
+# print(vigenere_cipher())
 
 def shift_cipher():
     ##ask the user for something to encode
