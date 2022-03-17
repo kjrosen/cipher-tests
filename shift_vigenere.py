@@ -1,7 +1,7 @@
 from mimetypes import init
 
-##to do: think about if the key or the plaintext has a space
 def vigenere_cipher():
+    """encodes a piece of text using vigenere, a complex polyalphabetic cipher"""
     ##get a key
     key = input("What is the key? > ").lower()
     ##get a user generated plaintext to encode
