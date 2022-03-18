@@ -15,36 +15,31 @@ def frequency_analysis(text):
         "w":0, "x":0, "y":0, "z":0
         }
     
-    text.replace(" ","") ##remove spaces and other mixemups
-    text.replace(".","")
-    text.replace(",","")
+    text = text.replace(" ","") ##remove spaces and other mixemups
+    text = text.replace(".","")
+    text = text.replace(",","")
+    text = text.replace("'","")
     text = text.lower()
 
-    letters_used = []
-    ##go through the text and add each letter to a new alphabet list
-    ##each letter only needs to be added once
-    for char in text:
-        if char not in letters_used:
-            letters_used.append(char)
-
-    letters_count = []
+    ##create list of unique letters used in the plaintext
+    letters_used = list(set(text))
     ##count each letter from the alphabet list as it appears in the text
-    for letter in letters_used:
-        letters_count.append(text.count(letter))
+    letters_count = [text.count(letter) for letter in letters_used]
+    '''while letters_used and letters_count are separate lists, 
+    the indexes are the same. letters_count[0] refers to the count
+    of the letter at letters_used[0]'''
 
-    ##divide that count by the length of text, then multiply by 10 to get percentage
+    ##divide that count by the length of text, then multiply by 100 to get percentage
+    ##letters_count now is now populated with the percentage of each letter
     for i in range(len(letters_count)):
-        letters_count[i] = (letters_count[i]/len(text)) * 10
+        letters_count[i] = (letters_count[i]/len(text)) * 100
 
     ##put those percentages into the corresponding cipher_alphabet dictionary.
-    '''this doesn't work right now. 
-    key error using cipher_alphabet[letter] appears blank?'''
     for letter in letters_used:
-        print(cipher_alphabet[letter])
         i = letters_used.index(letter)
         cipher_alphabet[letter] += letters_count[i]
 
     print(cipher_alphabet)
 
 
-print(frequency_analysis("""an input text needs to be long enough to have value when it comes to frequency analysis because otherwise there aren't enough letters to analyze"""))
+print(frequency_analysis("""an input text needs to be long enough to have value when it comes to frequency analysis because otherwise there arent enough letters to analyze"""))
