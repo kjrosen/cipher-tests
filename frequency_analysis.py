@@ -22,7 +22,11 @@ def frequency_analysis(text):
     text = text.lower()
 
     ##create list of unique letters used in the plaintext
-    letters_used = list(set(text))
+    letters_used = []
+    for letter in text:
+        if letter not in letters_used:
+            letters_used.append(letter)
+    # print(letters_used)
     ##count each letter from the alphabet list as it appears in the text
     letters_count = [text.count(letter) for letter in letters_used]
     '''while letters_used and letters_count are separate lists, 
@@ -39,7 +43,12 @@ def frequency_analysis(text):
         i = letters_used.index(letter)
         cipher_alphabet[letter] += letters_count[i]
 
-    print(cipher_alphabet)
+    ##find the most common used leter from the ciphertext
+    ##replace the most common letter from the regular alphabet into the ciphertext
+    ##print and let the user choose if it's correct
+    ##find the different in index between the most common cipher alphabet letter and the true alphabet
+    ##use that shift to fill in each letter with the shifted index
+
 
 
 print(frequency_analysis("""an input text needs to be long enough to have value when it comes to frequency analysis because otherwise there arent enough letters to analyze"""))
