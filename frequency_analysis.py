@@ -44,10 +44,18 @@ def frequency_analysis(text):
         cipher_alphabet[letter] += letters_count[i]
 
     ##find the most common used leter from the ciphertext
+    highest_perc = 0
+    most_used = ""
+    for letter in cipher_alphabet:
+        if cipher_alphabet[letter] > highest_perc:
+            most_used = letter
     ##replace the most common letter from the regular alphabet into the ciphertext
+    solve = text.replace(letter,"e")
     ##print and let the user choose if it's correct
     ##find the different in index between the most common cipher alphabet letter and the true alphabet
     ##use that shift to fill in each letter with the shifted index
+
+    return solve
 
 
 
