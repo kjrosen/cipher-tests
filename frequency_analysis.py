@@ -48,17 +48,22 @@ def frequency_analysis(cipher_text):
     the index of the most common used cipherletter as the shift
     OR
     more reliable would be showing the usage for a normal alphabet
-    vs the usage in a ciphertext and match up the wax and wane patterns'''
+    vs the usage in a ciphertext and match up the wax and wane patterns
+    Visualizing this in a graph would be incredibly helpful'''
     
     while True:
+        print(f"Cipher text: {cipher_text}")
         for letter in LETTER_USAGE:
             print(f"Normal usages: {letter, LETTER_USAGE[letter]} \t Cipher usage: {letter, cipher_usage[letter]}")
         shift = input("Where does the shift alphabet start? > ")
-        solve = shift_cipher(cipher_text,ALPHABET.index(shift))
+        ##decipher using a reverse shift of where the alphabet may start
+        solve = shift_cipher(cipher_text, 0 - ALPHABET.index(shift))
         keep_going = input(f"Does this make sense?\n\t{solve}\nyes or no? > ")
         if keep_going == "yes":
             break
+        ##keep going until the right shift number is found
 
     return
 
-frequency_analysis(shift_cipher(PLAIN_TEXT,7))
+test = shift_cipher(PLAIN_TEXT,3)
+frequency_analysis(test)
