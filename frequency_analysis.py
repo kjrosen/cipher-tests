@@ -13,6 +13,32 @@ MOST_USED = (
         "e","a","r","i","o","t","n","s","l","c","u","d","p","h","m","g","b",
         "y","f","w","k","v","x","z","q","j")
 
+def frequency_analasis_basic(cipher_text):
+    ##a list (so it can be ordered) of unique letters in the ciphertext
+    characters_used = []
+    for character in cipher_text:
+        if character not in characters_used:
+            characters_used.append(character)
+
+    ##count the instances of each letter used in the cipher text
+    ##divide by the length of the ciphertext and multiply by 100 to get the percent
+    character_count = [
+        ((cipher_text.count(character)/len(cipher_text))*100) 
+        for character in characters_used]
+    '''while letters_used and letters_count are separate lists, 
+    the indexes are the same. letters_count[0] refers to the count
+    of the letter at letters_used[0]'''
+    ##create an alphabet dictionary for characters from the ciphertext
+    ##characters are key, percent usage is the value
+    cipher_usage = {}
+    i = 0
+    for char in characters_used:
+        # cipher_usage.append(char,character_count[i])
+        cipher_usage.append(char,(cipher_text.count(character)/len(cipher_text))*100)
+        i+=1
+    
+    return
+
 def frequency_analysis(cipher_text):
 
     ##a list (so it can be ordered) of unique letters in the ciphertext
@@ -66,4 +92,5 @@ def frequency_analysis(cipher_text):
     return
 
 test = shift_cipher(PLAIN_TEXT,3)
-frequency_analysis(test)
+# frequency_analysis(test)
+frequency_analasis_basic(PLAIN_TEXT)
