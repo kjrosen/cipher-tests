@@ -1,6 +1,6 @@
-from shift_vigenere import shift_cipher
-from shift_vigenere import ALPHABET
-from shift_vigenere import PLAIN_TEXT
+from encoders import shift_cipher
+from encoders import ALPHABET
+from encoders import PLAIN_TEXT
 
 LETTER_USAGE = {
     "a":8.5, "b":2.1, "c":4.5, "d":3.4, "e":11.2, "f":1.8, "g":2.5, "h":3.0,
