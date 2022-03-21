@@ -53,17 +53,21 @@ def subsitution_cipher(plain_text,cipher_alphabet):
     ##first replace the full words in the plain text
     ##then iterate through each character, replacing each letter for the corresponding cipher character
     i = 0
-    cipher_text = plain_text.split()
-    for word in cipher_text:
+    plain_text = plain_text.split()
+    for word in plain_text:
         if word in cipher_alphabet:
-            cipher_text[i] = cipher_alphabet[word]
+            plain_text[i] = cipher_alphabet[word]
         i += 1
 
-    cipher_text = cipher_text.join()
+    cipher_text = ""
+    for word in plain_text:
+        cipher_text += word
+
     cipher_text = simplify_plaintext(cipher_text)
 
     for char in cipher_text:
-        cipher_text = cipher_text.replace(char,cipher_alphabet[char])
+        if char in cipher_alphabet:
+            cipher_text = cipher_text.replace(char,cipher_alphabet[char])
 
     return cipher_text
 
@@ -88,7 +92,7 @@ def shift_cipher(plain_text,shift):
     
     return cipher_text
 
-print(shift_cipher(TEST_TEXT,1))
+# print(shift_cipher(TEST_TEXT,1))
 
 def vigenere_cipher(plain_text,key):
     '''takes in a plaintext message and a key
@@ -116,4 +120,4 @@ def vigenere_cipher(plain_text,key):
     
     return cipher_text
 
-print(vigenere_cipher(TEST_TEXT,"feather"))
+# print(vigenere_cipher(TEST_TEXT,"feather"))

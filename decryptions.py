@@ -1,6 +1,8 @@
 from encoders import shift_cipher
+from encoders import subsitution_cipher
 from encoders import ALPHABET
-from encoders import PLAIN_TEXT
+from encoders import BABBINGTON_ALPHABET
+from encoders import TEST_TEXT
 
 LETTER_USAGE = {
     "a":8.5, "b":2.1, "c":4.5, "d":3.4, "e":11.2, "f":1.8, "g":2.5, "h":3.0,
@@ -13,7 +15,7 @@ MOST_USED = (
         "e","a","r","i","o","t","n","s","l","c","u","d","p","h","m","g","b",
         "y","f","w","k","v","x","z","q","j")
 
-def frequency_analasis_basic(cipher_text):
+def frequency_analysis_basic(cipher_text):
     ##a list (so it can be ordered) of unique letters in the ciphertext
     characters_used = []
     for character in cipher_text:
@@ -34,10 +36,15 @@ def frequency_analasis_basic(cipher_text):
     i = 0
     for char in characters_used:
         # cipher_usage.append(char,character_count[i])
-        cipher_usage.append(char,(cipher_text.count(character)/len(cipher_text))*100)
+        cipher_usage[char] = (cipher_text.count(character)/len(cipher_text))*100
         i+=1
+
+    '''replace the cipher's most used letter with "e", ask the user if that
+    makes sence. if yes, replace the second with "a", and so on down the
+    alphabet.
     
-    return
+    if no, continue to the second, etc.'''
+    return cipher_usage
 
 def frequency_analysis(cipher_text):
 
@@ -91,6 +98,5 @@ def frequency_analysis(cipher_text):
 
     return
 
-test = shift_cipher(PLAIN_TEXT,3)
-# frequency_analysis(test)
-frequency_analasis_basic(PLAIN_TEXT)
+test = subsitution_cipher(TEST_TEXT,BABBINGTON_ALPHABET)
+print(frequency_analysis_basic(test))
