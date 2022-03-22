@@ -48,7 +48,40 @@ def frequency_analysis(cipher_text):
 
 
 ##TODO: add checks for double characters
+def check_doubles(cipher_text):
+    '''indicate double characters in a cipher text'''
+    doubles = ""
+
+    i = 0
+    while i < len(cipher_text):
+        if cipher_text[i] == cipher_text[i + 1]:
+            ##change the color? ##bold?
+            doubles += cipher_text[i] + cipher_text[i + 1]
+            i += 2
+        else:
+            doubles += cipher_text
+            i += 1
+            
+    return doubles
+
+
 ##TODO: add checks for characters repeatedly placed next to each other
+def repeat_correspondance(cipher_text, repeat_n):
+    '''finds repeated instances when n characters follow each other'''
+
+    show_ngrams = cipher_text
+    chains = []
+    ##use markov chains to great ngrams
+    for i in range(len(cipher_text) - (repeat_n - 1)):
+        ngram = cipher_text[i: i + repeat_n]
+
+    ##iterate through the ngrams, counting identacal ngrams
+    for ngram in chains:
+        if chains.count(ngram) > 1:
+            show_ngrams.replace(ngram,ngram)##TODO the color
+            
+    ##return the cipher_text with the repeated ngrams highlighted
+    return show_ngrams
 
 
 def subsitution_solve(cipher_text, cipher_alphabet):
