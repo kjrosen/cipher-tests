@@ -19,16 +19,18 @@ BABBINGTON_ALPHABET = {
     "p":"\N{CAUCASIAN ALBANIAN LETTER GHEYS}", "q":"\N{GEORGIAN LETTER ON}", 
     "r":"\N{ARMENIAN CAPITAL LETTER BEN}", "s":"\N{COPTIC CAPITAL LETTER DALDA}",
     "t":"\N{CAUCASIAN ALBANIAN LETTER KAR}", "u":"\N{COPTIC SMALL LETTER SIMA}",
-    "v":" ", "w":" ", "x":"\N{CAUCASIAN ALBANIAN LETTER YOWD}", "y":"\N{CAUCASIAN ALBANIAN LETTER SHOY}",
-    "z":"\N{COPTIC CAPITAL LETTER DIALECT-P HORI}", "and":"\N{COPTIC SMALL LETTER DIALECT-P KAPA}",
-    "for":"\N{GEORGIAN LETTER WE}", "but":"\N{COPTIC CAPITAL LETTER AKHMIMIC KHEI}",
-    "with":"\N{OLD HUNGARIAN CAPITAL LETTER A}", "that":"\N{ARMENIAN CAPITAL LETTER KEN}",
-    "if":"\N{ARMENIAN CAPITAL LETTER VEW}", "as":"\N{GEORGIAN LETTER UN}", "of":"\N{GEORGIAN LETTER GHAN}", 
+    "v":" ", "w":" ", "x":"\N{CAUCASIAN ALBANIAN LETTER YOWD}", 
+    "y":"\N{CAUCASIAN ALBANIAN LETTER SHOY}", "z":"\N{COPTIC CAPITAL LETTER DIALECT-P HORI}", 
+    "and":"\N{COPTIC SMALL LETTER DIALECT-P KAPA}", "for":"\N{GEORGIAN LETTER WE}", 
+    "but":"\N{COPTIC CAPITAL LETTER AKHMIMIC KHEI}", "with":"\N{OLD HUNGARIAN CAPITAL LETTER A}", 
+    "that":"\N{ARMENIAN CAPITAL LETTER KEN}", "if":"\N{ARMENIAN CAPITAL LETTER VEW}", 
+    "as":"\N{GEORGIAN LETTER UN}", "of":"\N{GEORGIAN LETTER GHAN}", 
     "the":"\N{GEORGIAN LETTER TAR}", "by":"\N{GLAGOLITIC CAPITAL LETTER DOBRO}", 
     "so":"\N{GEORGIAN CAPITAL LETTER HOE}", "not":"\N{OLD HUNGARIAN CAPITAL LETTER EB}", 
-    "when":"\N{COPTIC CAPITAL LETTER CRYPTOGRAMMIC GANGIA}", "from":"\N{OLD HUNGARIAN CAPITAL LETTER ETY}", 
-    "this":"\N{GLAGOLITIC CAPITAL LETTER ONU}", "is":"\N{GLAGOLITIC CAPITAL LETTER NASHI}", 
-    "in":"\N{COPTIC CAPITAL LETTER KHI}", "say":"\N{GEORGIAN LETTER IN}", "me":"\N{GEORGIAN LETTER TAN}", 
+    "when":"\N{COPTIC CAPITAL LETTER CRYPTOGRAMMIC GANGIA}", 
+    "from":"\N{OLD HUNGARIAN CAPITAL LETTER ETY}", "this":"\N{GLAGOLITIC CAPITAL LETTER ONU}", 
+    "is":"\N{GLAGOLITIC CAPITAL LETTER NASHI}", "in":"\N{COPTIC CAPITAL LETTER KHI}", 
+    "say":"\N{GEORGIAN LETTER IN}", "me":"\N{GEORGIAN LETTER TAN}", 
     "my":"\N{GEORGIAN LETTER LAS}", "you":"\N{CAUCASIAN ALBANIAN LETTER QAY}", 
     "what":"\N{GEORGIAN LETTER DON}", "where":"\N{CAUCASIAN ALBANIAN LETTER TIWR}", 
     "which":"\N{CAUCASIAN ALBANIAN LETTER BET}", "there":"\N{GEORGIAN LETTER CHAR}", 
@@ -50,6 +52,11 @@ def simplify_plaintext(plain_text):
     return plain_text.lower()
 
 def subsitution_cipher(plain_text,cipher_alphabet):
+    '''encodes a given text with a given cipher
+    
+    takes a string text and an alphabet dictionary
+    returns a string stext
+    '''
     ##first replace the full words in the plain text
     ##then iterate through each character, replacing each letter for the corresponding cipher character
     i = 0
@@ -70,6 +77,10 @@ def subsitution_cipher(plain_text,cipher_alphabet):
             cipher_text = cipher_text.replace(char,cipher_alphabet[char])
 
     return cipher_text
+
+print("SUBSITUTION CIPHER:")
+print(subsitution_cipher(TEST_TEXT,BABBINGTON_ALPHABET))
+print()
 
 def shift_cipher(plain_text,shift):
     '''takes a string of plain text, and an integer to shift over
@@ -105,7 +116,7 @@ def vigenere_cipher(plain_text,key):
 
     plain_text = simplify_plaintext(plain_text)#rids plaintext of extraneous characters
     key = simplify_plaintext(key)#keys also need to be simplified
-    
+
     full_key = key##we'll repeat the key over the plaintext forever
     while len(full_key) < len(plain_text):
         full_key += key
