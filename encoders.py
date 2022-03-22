@@ -58,33 +58,35 @@ def subsitution_cipher(plain_text,cipher_alphabet):
     returns a string stext
     '''
     ##first replace the full words in the plain text
-    ##then iterate through each character, replacing each letter for the corresponding cipher character
     i = 0
-    plain_text = plain_text.split()
-    for word in plain_text:
-        if word in cipher_alphabet:
-            plain_text[i] = cipher_alphabet[word]
+    cipher_text = ""
+    plain_words = plain_text.split()
+    for word in plain_words:
+        no_punct = simplify_plaintext(word)##remove punctuation temporarily
+        if no_punct in cipher_alphabet:
+            plain_words[i] = cipher_alphabet[no_punct]
+        
+        ##add each individual character to a cipher_text
+        for char in word:
+            cipher_text += char
         i += 1
 
-    cipher_text = ""
-    for word in plain_text:
-        cipher_text += word
-
-    cipher_text = simplify_plaintext(cipher_text)
-
+    cipher_text = simplify_plaintext(cipher_text)##just in case
+    
+    ##then iterate through each character, replacing each letter for the corresponding 
     for char in cipher_text:
-        if char in cipher_alphabet:
+        try:
             cipher_text = cipher_text.replace(char,cipher_alphabet[char])
+        except:
+            continue
 
     return cipher_text
 
-print("SUBSITUTION CIPHER:")
-print(subsitution_cipher(TEST_TEXT,BABBINGTON_ALPHABET))
-print()
 
 def shift_cipher(plain_text,shift):
-    '''takes a string of plain text, and an integer to shift over
-
+    '''encodes a given text shifted down the alphabet a given number
+    
+    takes a string of plain text, and an integer to shift over
     returns a cipher text encoded with the shifted alphabet'''
 
     cipher_text = ""##create a coded variable
@@ -103,32 +105,27 @@ def shift_cipher(plain_text,shift):
     
     return cipher_text
 
-# print(shift_cipher(TEST_TEXT,1))
 
 def vigenere_cipher(plain_text,key):
-    '''takes in a plaintext message and a key
+    '''encodes a given text with a rotating shift cipher based on a given key
     
-    places the key over it repeatedly, and considers each letter
-    from the key the start of a new alphabet shifted over
-    
-    returns a ciphertext with each letter replaced with that letter's index
-    from the corresponding key-character's alphabet'''
+    takes a string plain text and a string key
+    returns a string cipher text'''
 
-    plain_text = simplify_plaintext(plain_text)#rids plaintext of extraneous characters
-    key = simplify_plaintext(key)#keys also need to be simplified
+    ##rid both plaintext and key of extraneous characters
+    plain_text = simplify_plaintext(plain_text)
+    key = simplify_plaintext(key)
 
-    full_key = key##we'll repeat the key over the plaintext forever
+    ##repeat the key over the plaintext forever: each plainchar has its own shift key
+    full_key = key
     while len(full_key) < len(plain_text):
         full_key += key
 
-    '''each letter in the plaintext is encoded with a shift cipher
-    using the alphabet starting with the corresponding key letter'''
     i = 0
     cipher_text = ""
-    for char in plain_text:##each letter in the key is its own shift
+    ##run a standard shift cipher over each individual character shifted to the keychar 
+    for char in plain_text:
         cipher_text += shift_cipher(char,ALPHABET.index(full_key[i]))
         i += 1
     
     return cipher_text
-
-# print(vigenere_cipher(TEST_TEXT,"feather"))

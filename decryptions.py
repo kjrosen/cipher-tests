@@ -1,8 +1,15 @@
-from encoders import shift_cipher
-from encoders import subsitution_cipher
+from os import remove
+from random import randint
+
+from encoders import TEST_TEXT
 from encoders import ALPHABET
 from encoders import BABBINGTON_ALPHABET
-from encoders import TEST_TEXT
+from encoders import TEST_KEYS
+
+from encoders import simplify_plaintext
+from encoders import subsitution_cipher
+from encoders import shift_cipher
+from encoders import vigenere_cipher
 
 LETTER_USAGE = {
     "a":8.5, "b":2.1, "c":4.5, "d":3.4, "e":11.2, "f":1.8, "g":2.5, "h":3.0,
@@ -11,84 +18,97 @@ LETTER_USAGE = {
     "y":1.8, "z":0.3
 }
 
-MOST_USED = (
+MOST_USED = [
         "e","a","r","i","o","t","n","s","l","c","u","d","p","h","m","g","b",
-        "y","f","w","k","v","x","z","q","j")
-
-def frequency_analysis_basic(cipher_text):
-    ##a list (so it can be ordered) of unique letters in the ciphertext
-    characters_used = []
-    for character in cipher_text:
-        if character not in characters_used:
-            characters_used.append(character)
-
-    ##count the instances of each letter used in the cipher text
-    ##divide by the length of the ciphertext and multiply by 100 to get the percent
-    character_count = [
-        ((cipher_text.count(character)/len(cipher_text))*100) 
-        for character in characters_used]
-    '''while letters_used and letters_count are separate lists, 
-    the indexes are the same. letters_count[0] refers to the count
-    of the letter at letters_used[0]'''
-    ##create an alphabet dictionary for characters from the ciphertext
-    ##characters are key, percent usage is the value
-    cipher_usage = {}
-    i = 0
-    for char in characters_used:
-        # cipher_usage.append(char,character_count[i])
-        cipher_usage[char] = (cipher_text.count(character)/len(cipher_text))*100
-        i+=1
-
-    '''replace the cipher's most used letter with "e", ask the user if that
-    makes sence. if yes, replace the second with "a", and so on down the
-    alphabet.
-    
-    if no, continue to the second, etc.'''
-    return cipher_usage
+        "y","f","w","k","v","x","z","q","j"]
 
 def frequency_analysis(cipher_text):
-
-    ##a list (so it can be ordered) of unique letters in the ciphertext
-    letters_used = []
-    for letter in cipher_text:
-        if letter not in letters_used:
-            letters_used.append(letter)
-
-    ##count the instances of each letter used in the cipher text
-    ##divide by the length of the ciphertext and multiply by 100 to get the percent
-    letters_count = [
-        ((cipher_text.count(letter)/len(cipher_text))*100) 
-        for letter in letters_used]
-    '''while letters_used and letters_count are separate lists, 
-    the indexes are the same. letters_count[0] refers to the count
-    of the letter at letters_used[0]'''
-
-    cipher_usage = {
-        "a":0, "b":0, "c":0, "d":0, "e":0, "f":0, "g":0, "h":0,
-        "i":0, "j":0, "k":0, "l":0, "m":0, "n":0, "o":0, "p":0,
-        "q":0, "r":0, "s":0, "t":0, "u":0, "v":0, "w":0, "x":0,
-        "y":0, "z":0}
-
-    for letter in letters_used:
-        ##add the letter count for the corresponding letter to the usage dictionary
-        ##reformat the float into a string to limit the decimals
-        ##re-reformat the percentage back into a float
-        cipher_usage[letter] = float("{:.1f}".format(letters_count[letters_used.index(letter)]))
-
-    '''for solving a shift cipher:
+    '''runs an interface to replace common characters in a cipher with plaintext
     
-    apply a shift cipher using 
-    the index of the most common used cipherletter as the shift
-    OR
-    more reliable would be showing the usage for a normal alphabet
-    vs the usage in a ciphertext and match up the wax and wane patterns
-    Visualizing this in a graph would be incredibly helpful'''
+    given a string cipher text
+    counts each instance of each character in the cipher text 
+
+    returns a cipher alphabet with usage percentage
+    '''
+
+    cipher_alphabet = {}
+    ##builds a cipher alphabet and counts the instances of each character
+    for character in cipher_text:
+        cipher_alphabet[character] = cipher_alphabet.get(character,0) + 1
+
+    ##adjusts the character count into a character usage percentage
+    for character in cipher_alphabet:
+        cipher_alphabet[character] = (cipher_alphabet[character]/len(cipher_text)) * 100
+
+    ##prints the cipher alphabet compared usage
+    for char in cipher_alphabet:
+        print(char,cipher_alphabet[char])
     
+    return cipher_alphabet
+
+
+##TODO: add checks for double characters
+##TODO: add checks for characters repeatedly placed next to each other
+
+
+def subsitution_solve(cipher_text, cipher_alphabet):
+    '''interfaces with users to replace common characters with common used letters
+
+    takes in a cipher alphabet with usage percentages
+    returns decoded text'''
+
+    sub_letter = MOST_USED[0]
+
+    while True:
+        most_cipher = 0  
+        ##finds the most used cipher character to replace
+        for char in cipher_alphabet:
+            if cipher_alphabet[char] > most_cipher:
+                most_cipher = cipher_alphabet[char]
+                sub_char = char
+        print(MOST_USED)
+        print(sub_char, "=", sub_letter)
+        solve = cipher_text.replace(sub_char, sub_letter)
+        correctness = input(f"Does this make sense?\n\t{solve}\nyes or no > ")
+        
+        if correctness.startswith("yes"):
+            MOST_USED.remove(sub_letter)
+            sub_letter = MOST_USED[0]
+            cipher_alphabet[sub_char] = -1
+            cipher_text = solve
+            print()
+    
+        else:
+            sub_letter = MOST_USED[MOST_USED.index(sub_letter) + 1]
+    
+    return solve
+
+
+def shift_solve(cipher_text):
+    '''compares cipher character usage with true usage, finds the shift key
+    
+    takes an encrypted text, builds a usage dictionary, compares character usage
+    interfaces with user to test shift keys
+    returns decrypted text
+    '''
+
+    ##creates a dictionary of the cipher characters and and their percentage usage
+    cipher_alphabet = frequency_analysis(cipher_text)
+
+    for letter in cipher_alphabet:
+        ##adjusts each percentage value to one decimal point
+        cipher_alphabet[letter] = float("{:.1f}".format(cipher_alphabet[letter]))
+
+    cipher_alphabet = sorted(cipher_alphabet)##alphabetically sort the alphabet
+    
+    ##compare a plainalphabets usage with the cipher's usage
     while True:
         print(f"Cipher text: {cipher_text}")
         for letter in LETTER_USAGE:
-            print(f"Normal usages: {letter, LETTER_USAGE[letter]} \t Cipher usage: {letter, cipher_usage[letter]}")
+            print(f"Normal usages: {letter, LETTER_USAGE[letter]} \t Cipher usage: {letter, cipher_alphabet[letter]}")
+        
         shift = input("Where does the shift alphabet start? > ")
+        
         ##decipher using a reverse shift of where the alphabet may start
         solve = shift_cipher(cipher_text, 0 - ALPHABET.index(shift))
         keep_going = input(f"Does this make sense?\n\t{solve}\nyes or no? > ")
@@ -96,7 +116,12 @@ def frequency_analysis(cipher_text):
             break
         ##keep going until the right shift number is found
 
-    return
+    return solve
 
-test = subsitution_cipher(TEST_TEXT,BABBINGTON_ALPHABET)
-print(frequency_analysis_basic(test))
+
+test_sub = subsitution_cipher(TEST_TEXT,BABBINGTON_ALPHABET)
+test_shift = shift_cipher(TEST_TEXT,randint(0,26))
+test_vigenere = vigenere_cipher(TEST_TEXT,TEST_KEYS[randint(0,2)])
+
+print(f"\nSubsitution Cipher:\n{test_sub}\n\nShift Cipher:\n{test_shift}")
+print(f"\nVigenere Cipher:\n{test_vigenere}\n")
