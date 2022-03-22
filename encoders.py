@@ -5,9 +5,8 @@ keeping it short. But a good input text for decrypting ciphers is longer,
 so if you can't keep it short at least don't include punctuation.
 This way we have less hints about the structure of the plain text,
 but the cipher text still has enough letters to analyze."""
-
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-
+TEST_KEYS = ["key", "once upon a midnight dreary", "the quick brown fox jumps over the lazy dog"]
 BABBINGTON_ALPHABET = {
     "a":"\N{COPTIC CAPITAL LETTER O}", "b":"\N{OLD HUNGARIAN CAPITAL LETTER EGY}",
     "c":"\N{OLD HUNGARIAN CAPITAL LETTER ES}", "d":"\N{COPTIC CAPITAL LETTER OLD COPTIC OOU}",
@@ -50,6 +49,7 @@ def simplify_plaintext(plain_text):
     plain_text = plain_text.replace("\n","")
 
     return plain_text.lower()
+
 
 def subsitution_cipher(plain_text,cipher_alphabet):
     '''encodes a given text with a given cipher
