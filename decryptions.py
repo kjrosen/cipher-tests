@@ -6,7 +6,7 @@ from encoders import ALPHABET
 from encoders import BABBINGTON_ALPHABET
 from encoders import TEST_KEYS
 
-from encoders import simplify_plaintext
+# from encoders import simplify_plaintext
 from encoders import subsitution_cipher
 from encoders import shift_cipher
 from encoders import vigenere_cipher
