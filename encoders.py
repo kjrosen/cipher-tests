@@ -1,10 +1,23 @@
 from mimetypes import init
 
-TEST_TEXT = """A good input text for keeping messages hidden is
-keeping it short. But a good input text for decrypting ciphers is longer,
-so if you can't keep it short at least don't include punctuation.
-This way we have less hints about the structure of the plain text,
-but the cipher text still has enough letters to analyze."""
+TEST_TEXT = """Hi my name is Ebony Dark'ness Dementia Raven Way 
+and I have long ebony black hair (that's how I got my name) 
+with purple streaks and red tips that reaches my mid-back 
+and icy blue eyes like limpid tears 
+and a lot of people tell me I look like Amy Lee 
+(AN: if u don't know who she is get da hell out of here!). 
+I'm not related to Gerard Way but I wish I was because he's a major fucking hottie. 
+I'm a vampire but my teeth are straight and white. I have pale white skin. 
+I'm also a witch, and I go to a magic school called Hogwarts in England 
+where I'm in the seventh year (I'm seventeen). 
+I'm a goth (in case you couldn't tell) and I wear mostly black. 
+I love Hot Topic and I buy all my clothes from there. 
+For example today I was wearing a black corset with matching lace around it 
+and a black leather miniskirt, pink fishnets and black combat boots. 
+I was wearing black lipstick, white foundation, black eyeliner and red eye shadow. 
+I was walking outside Hogwarts. It was snowing and raining so there was no sun, 
+which I was very happy about. A lot of preps stared at me. I put up my middle 
+finger at them."""
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 TEST_KEYS = ["key", "once upon a midnight dreary", "the quick brown fox jumps over the lazy dog"]
 BABBINGTON_ALPHABET = {
@@ -129,3 +142,19 @@ def vigenere_cipher(plain_text,key):
         i += 1
     
     return cipher_text
+
+
+def enigma_machine(plain_text,swaps,rotators):
+    '''each swap represents two letters that swap out each other's input
+    each rotator represents a shift cipher
+    
+    if the swap is a -> b, and rotator1 = 1, rotator2 = 2, and rotator 3 = 3
+    first a=b, and b is shifted to c, then to e, then to h
+    
+    after each letter, rotator1 += 1
+    when rotator1 goes all the way around once, rotator2 starts shifting
+    when rotator2 goes all the way around once, rotator3 starts shifting
+
+    TODO: something about a reflector so decoding is the same process as encoding
+    '''
+    pass
