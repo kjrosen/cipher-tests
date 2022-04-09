@@ -175,14 +175,14 @@ def enigma_machine(plain_text,swaps,wheels):
         cipher_text = cipher_text.replace(pair[0], pair[1].upper())
         cipher_text = cipher_text.replace(pair[1], pair[0].upper())
 
-    # cipher_text = list((cipher_text).lower())
+    # cipher_text = list((cipher_text))
 
     rotate1_num = 0 
     rotate2_num = 0
     rotate3_num = 0
 
-    for wheel_i in range(3):
-        cipher_text = subsitution_cipher(cipher_text, wheels[wheel_i])
+    ## create a dictionary/alphabet using the wheels
+    wheel_alpha = {}
     
 
     return cipher_text
