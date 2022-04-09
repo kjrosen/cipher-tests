@@ -56,6 +56,8 @@ WHEELS = [
     "VZBRGITYUPSDNHLXAWMJQOFECK", "EJMZALYXVBWFCRQUONTSPIKHGD",
     "YRUHQSLDPXNGOKMIEBFZCWVJAT", "FVPJIAOYEDRZXWGCTKUQSBNMHL"
     ]
+TEST_WHEELS = [WHEELS[0], WHEELS[1], WHEELS[2]]
+TEST_PLUGS = ["nk", "xo", "me", "ju", "fl", "ps"]
 
 
 def simplify_plaintext(plain_text):
@@ -175,19 +177,38 @@ def enigma_machine(plain_text,swaps,wheels):
         cipher_text = cipher_text.replace(pair[0], pair[1].upper())
         cipher_text = cipher_text.replace(pair[1], pair[0].upper())
 
-    # cipher_text = list((cipher_text))
-
     rotate1_num = 0 
     rotate2_num = 0
     rotate3_num = 0
 
-    ## create a dictionary/alphabet using the wheels
-    wheel_alpha = {}
-    
+    '''
+    when a goes through, it should get converted into wheel0's corresponding a
+    then it should get converted into wheel2's corresponding whatever-wheel0-turned-a-into
+    then it should get converted into wheel3's corresponding whatever-wheel1-turned-a-into
+    then wheel0 should shift down by 1
+    '''
 
-    return cipher_text
+    wheel_alphas = {}
+    for wheel in wheels:
 
-print(enigma_machine(TEST_TEXT, ["nk", "xo", "me", "ju", "fl", "ps"], [WHEELS[0], WHEELS[4], WHEELS[7]]))
+        alpha = f"wheel{wheels.index(wheel)}"
+        wheel_alphas[alpha] = {}
+        
+        i = 0
+        for letter in ALPHABET:
+            wheel_alphas[alpha][letter] = wheel[i]
+            i += 1
+
+    cipher_text = list(cipher_text)
+    for text_i in range(len(cipher_text)):
+        for wheel in range(len(wheel_alphas)):
+            cipher_text[text_i] = subsitution_cipher(
+                cipher_text[text_i], wheel_alphas[f"wheel{wheel}"])
+
+    # print(wheel_alphas)
+    return "".join(cipher_text)
+
+print(enigma_machine(TEST_TEXT, TEST_PLUGS, TEST_WHEELS))
 
 
 
