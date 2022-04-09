@@ -1,16 +1,17 @@
 from mimetypes import init
+from operator import index
 
 TEST_TEXT = """Hi my name is Ebony Dark'ness Dementia Raven Way 
-and I have long ebony black hair (that's how I got my name) 
+and I have long ebony black hair -that's how I got my name- 
 with purple streaks and red tips that reaches my mid-back 
 and icy blue eyes like limpid tears 
 and a lot of people tell me I look like Amy Lee 
-(AN: if u don't know who she is get da hell out of here!). 
+-AN: if u don't know who she is get da hell out of here!-. 
 I'm not related to Gerard Way but I wish I was because he's a major fucking hottie. 
 I'm a vampire but my teeth are straight and white. I have pale white skin. 
 I'm also a witch, and I go to a magic school called Hogwarts in England 
-where I'm in the seventh year (I'm seventeen). 
-I'm a goth (in case you couldn't tell) and I wear mostly black. 
+where I'm in the seventh year -I'm seventeen-. 
+I'm a goth -in case you couldn't tell- and I wear mostly black. 
 I love Hot Topic and I buy all my clothes from there. 
 For example today I was wearing a black corset with matching lace around it 
 and a black leather miniskirt, pink fishnets and black combat boots. 
@@ -49,6 +50,13 @@ BABBINGTON_ALPHABET = {
     "send":"\N{COPTIC CAPITAL LETTER OLD COPTIC HAT}", "receive":"\N{ARMENIAN SMALL LETTER FEH}", 
     "pray":"\N{GEORGIAN CAPITAL LETTER HE}"
     }
+WHEELS = [
+    "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE", 
+    "BDFHJLCPRTXVZNYEIWGAKMUSQO", "ESOVPZJAYQUIRHXLNFTGKDCMWB", 
+    "VZBRGITYUPSDNHLXAWMJQOFECK", "EJMZALYXVBWFCRQUONTSPIKHGD",
+    "YRUHQSLDPXNGOKMIEBFZCWVJAT", "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+    ]
+
 
 def simplify_plaintext(plain_text):
     '''removes spaces and punctuation from a plain text for better encryption'''
@@ -60,6 +68,7 @@ def simplify_plaintext(plain_text):
     plain_text = plain_text.replace("!","")
     plain_text = plain_text.replace("?","")
     plain_text = plain_text.replace("\n","")
+    plain_text = plain_text.replace(":", "")
 
     return plain_text.lower()
 
@@ -138,18 +147,16 @@ def vigenere_cipher(plain_text,key):
     cipher_text = ""
     ##run a standard shift cipher over each individual character shifted to the keychar 
     for char in plain_text:
-        cipher_text += shift_cipher(char,ALPHABET.index(full_key[i]))
+        cipher_text += shift_cipher(char, ALPHABET.index(full_key[i]))
         i += 1
     
     return cipher_text
 
 
-def enigma_machine(plain_text,swaps,rotators):
-    '''each swap represents two letters that swap out each other's input
-    each rotator represents a shift cipher
-    
-    if the swap is a -> b, and rotator1 = 1, rotator2 = 2, and rotator 3 = 3
-    first a=b, and b is shifted to c, then to e, then to h
+def enigma_machine(plain_text,swaps,wheels):
+    '''
+    each swap represents two letters that swap out each other's input
+    each rotator represents a sub cipher
     
     after each letter, rotator1 += 1
     when rotator1 goes all the way around once, rotator2 starts shifting
@@ -157,4 +164,31 @@ def enigma_machine(plain_text,swaps,rotators):
 
     TODO: something about a reflector so decoding is the same process as encoding
     '''
-    pass
+    ##simplify plaintext to get ride of annoyances
+    plain_text = simplify_plaintext(plain_text)
+    cipher_text = plain_text
+
+    # swapAlpha = ALPHABET[:]
+    ##deal with the pure swaps first. 
+    # Use .upper() to ensure the second swap won't reswap first
+    for pair in swaps:
+        cipher_text = cipher_text.replace(pair[0], pair[1].upper())
+        cipher_text = cipher_text.replace(pair[1], pair[0].upper())
+
+    # cipher_text = list((cipher_text).lower())
+
+    rotate1_num = 0 
+    rotate2_num = 0
+    rotate3_num = 0
+
+    for wheel_i in range(3):
+        cipher_text = subsitution_cipher(cipher_text, wheels[wheel_i])
+    
+
+    return cipher_text
+
+print(enigma_machine(TEST_TEXT, ["nk", "xo", "me", "ju", "fl", "ps"], [WHEELS[0], WHEELS[4], WHEELS[7]]))
+
+
+
+    
