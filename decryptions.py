@@ -1,15 +1,9 @@
 from os import remove
 from random import randint
 
-from encoders import TEST_TEXT
-from encoders import ALPHABET
-from encoders import BABBINGTON_ALPHABET
-from encoders import TEST_KEYS
+from encoders import TEST_TEXT, ALPHABET, BABBINGTON_ALPHABET, TEST_KEYS
+from encoders import simplify_plaintext, subsitution_cipher, shift_cipher, vigenere_cipher
 
-# from encoders import simplify_plaintext
-from encoders import subsitution_cipher
-from encoders import shift_cipher
-from encoders import vigenere_cipher
 
 LETTER_USAGE = {
     "a":8.5, "b":2.1, "c":4.5, "d":3.4, "e":11.2, "f":1.8, "g":2.5, "h":3.0,
@@ -22,66 +16,124 @@ MOST_USED = [
         "e","a","r","i","o","t","n","s","l","c","u","d","p","h","m","g","b",
         "y","f","w","k","v","x","z","q","j"]
 
-def frequency_analysis(cipher_text):
-    '''runs an interface to replace common characters in a cipher with plaintext
-    
-    given a string cipher text
-    counts each instance of each character in the cipher text 
+TEST_SUB = subsitution_cipher("Hello World",BABBINGTON_ALPHABET)
+TEST_SHIFT = shift_cipher("Hello World",8)
+TEST_VIGENERE = vigenere_cipher("Hello World","testkey")
 
-    returns a cipher alphabet with usage percentage
-    '''
+
+def print_usage_percents(usage):
+    """print a frequency analysis dictionary in a readable way
+    
+    >>> print_usage_percents(LETTER_USAGE)
+    a 8.5
+    b 2.1
+    c 4.5
+    d 3.4
+    e 11.2
+    f 1.8
+    g 2.5
+    h 3.0
+    i 7.5
+    j 0.2
+    k 1.1
+    l 5.5
+    m 3.0
+    n 6.7
+    o 7.2
+    p 3.2
+    q 0.2
+    r 7.6
+    s 5.7
+    t 7.0
+    u 3.6
+    v 1.0
+    w 1.3
+    x 0.3
+    y 1.8
+    z 0.3
+    """
+
+    for char in usage:
+        print(char, usage[char])
+
+
+def frequency_analysis(ciphertext):
+    """runs a frequency analysis on a given ciphertext
+    
+    returns a dictionary of each cipher character and its usage percentage
+    
+    >>> frequency_analysis(TEST_SHIFT)
+    {'p': 10.0, 'm': 10.0, 't': 30.0, 'w': 20.0, 'e': 10.0, 'z': 10.0, 'l': 10.0}
+
+    """
 
     cipher_alphabet = {}
-    ##builds a cipher alphabet and counts the instances of each character
-    for character in cipher_text:
+    for character in ciphertext:
         cipher_alphabet[character] = cipher_alphabet.get(character,0) + 1
 
     ##adjusts the character count into a character usage percentage
     for character in cipher_alphabet:
-        cipher_alphabet[character] = (cipher_alphabet[character]/len(cipher_text)) * 100
-
-    ##prints the cipher alphabet compared usage
-    for char in cipher_alphabet:
-        print(char,cipher_alphabet[char])
+        cipher_alphabet[character] = (cipher_alphabet[character]/len(ciphertext)) * 100
     
     return cipher_alphabet
 
 
-##TODO: add checks for double characters
-def check_doubles(cipher_text):
-    '''indicate double characters in a cipher text'''
-    doubles = ""
+def find_doubles(ciphertext):
+    """finds and saves all duplicate characters in a ciphertext
+    returns a list
+        idx[0] is a list with all the characters doubled up
+        idx[1] is the ciphertext with doubled characters capitalized
 
-    i = 0
-    while i < len(cipher_text):
-        if cipher_text[i] == cipher_text[i + 1]:
-            ##change the color? ##bold?
-            doubles += cipher_text[i] + cipher_text[i + 1]
-            i += 2
-        else:
-            doubles += cipher_text
-            i += 1
+    >>> find_doubles(TEST_SHIFT)
+    [['t'], 'pmTTwewztl']
+
+    """
+
+    doubles = []
+    cipher = []
+
+    last = ""
+
+    for idx, char in enumerate(ciphertext):
+        letter = char
+
+        if char == last:
+            doubles.append(char)
+            cipher[idx-1] = cipher[idx-1].upper()
+            letter = letter.upper()
+
+        cipher.append(letter)
+        last = char
             
-    return doubles
+    return [doubles, "".join(cipher)]
 
 
-##TODO: add checks for characters repeatedly placed next to each other
-def repeat_correspondance(cipher_text, repeat_n):
-    '''finds repeated instances when n characters follow each other'''
+def finds_repeat_correspondance(ciphertext, nchars):
+    """finds repeated instances of n number characters that appear next to each other more than once
+    
+    returns a dictionary
+        keys are substrings of nchars that appear together more than once
+        values are how often they appear
 
-    show_ngrams = cipher_text
-    chains = []
-    ##use markov chains to great ngrams
-    for i in range(len(cipher_text) - (repeat_n - 1)):
-        ngram = cipher_text[i: i + repeat_n]
+    >>> finds_repeat_correspondance(shift_cipher("Things are Happening so Bring a Sweater", 8), 3)
+    [{'qvo': 3, 'voa': 2}, 'bpqvoaizmpixxmvqvoawjzqvoiaemibmz']
+    
+    """
+    ngrams = {}
 
-    ##iterate through the ngrams, counting identacal ngrams
-    for ngram in chains:
-        if chains.count(ngram) > 1:
-            show_ngrams.replace(ngram,ngram)##TODO the color
-            
-    ##return the cipher_text with the repeated ngrams highlighted
-    return show_ngrams
+    for idx in range(len(ciphertext)):
+        ngrams[ciphertext[idx: idx + nchars]] = ngrams.get(ciphertext[idx: idx + nchars], 0) + 1
+
+    pops = []
+
+    for key in ngrams.keys():
+        if ngrams[key] < 2:
+            pops.append(key)
+
+    for pop in pops:
+        ngrams.pop(pop)
+
+    return [ngrams, ciphertext]
 
 
 def subsitution_solve(cipher_text, cipher_alphabet):
@@ -152,9 +204,8 @@ def shift_solve(cipher_text):
     return solve
 
 
-test_sub = subsitution_cipher(TEST_TEXT,BABBINGTON_ALPHABET)
-test_shift = shift_cipher(TEST_TEXT,randint(0,26))
-test_vigenere = vigenere_cipher(TEST_TEXT,TEST_KEYS[randint(0,2)])
+if __name__ == '__main__':
+    import doctest
 
-print(f"\nSubsitution Cipher:\n{test_sub}\n\nShift Cipher:\n{test_shift}")
-print(f"\nVigenere Cipher:\n{test_vigenere}\n")
+    if doctest.testmod().failed == 0:
+        print("\n*** ALL TEST PASSED!\n")
