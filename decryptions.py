@@ -18,40 +18,14 @@ TEST_SHIFT = shift_cipher("Hello World",8)
 TEST_VIGENERE = vigenere_cipher("Hello World","testkey")
 
 
-def print_usage_percents(usage):
+def compare_usage_percents(cipher_usage):
     """print a frequency analysis dictionary in a readable way
-    
-    >>> print_usage_percents(LETTER_USAGE)
-    a 8.5
-    b 2.1
-    c 4.5
-    d 3.4
-    e 11.2
-    f 1.8
-    g 2.5
-    h 3.0
-    i 7.5
-    j 0.2
-    k 1.1
-    l 5.5
-    m 3.0
-    n 6.7
-    o 7.2
-    p 3.2
-    q 0.2
-    r 7.6
-    s 5.7
-    t 7.0
-    u 3.6
-    v 1.0
-    w 1.3
-    x 0.3
-    y 1.8
-    z 0.3
     """
 
-    for char in usage:
-        print(char, usage[char])
+    print("Normal usage \t Cipher usage")
+
+    for char in LETTER_USAGE:
+        print(f"{char} - {LETTER_USAGE[char]} \t\t- {cipher_usage[char]}")
 
 
 def frequency_analysis(ciphertext):

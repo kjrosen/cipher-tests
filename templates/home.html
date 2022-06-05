@@ -1,0 +1,58 @@
+{% extend base %}
+
+{% block title %} 
+    Encoder
+{% endblock %}
+
+{% block content %}
+    <form>
+        <input type="text" id="plaintext">
+        <button id="sub">Subsitution Cipher</button>
+        <button id="shift">Shift Cipher</button>
+        <button id="vigenere">Vigenere Cipher</button>
+        <button id="enigma">Enigma Machine</button>
+
+        <form class="hide subs">
+            To make your own cipher alphabet:
+            Type a plaintext letter or word /
+            Type the cipher replacement
+            <input type="text" id="cipherAlpha">
+
+            Or pick our one of below cipher alphabets:
+            <button id="babbington">Babbington Alphabet</button>
+            <button id="atbash">Atbash Alphabet</button>
+            <button id="bacon">Baconian Alphabet</button>
+        </form>
+
+        <form class="hide shift">
+            Shift each number ___ chararcters?
+            <input type="number">
+            <button>Encode</button>
+        </form>
+
+        <form class="hide vigenere">
+            What's your key?
+            <input type="text">
+            <button>Encode</button>
+        </form>
+
+        <form class="hide enigma">
+            <!-- repeat this 6 times for all swaps -->
+            Swaps:
+            {% for letter in alphabet %} 
+                <input type="radio" value={{ letter }}>{{ letter }}
+            {% endfor %}
+
+            <!-- repeat this 3 times for all wheels -->
+            Wheels:
+            <select>
+                {% for wheel in wheels %}
+                    <option value={{ wheel }}>
+                        {{ wheel }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+        
+    </form>
+{% endblock %}

@@ -1,56 +1,13 @@
 from operator import index
 
-TEST_TEXT = """Hi my name is Ebony Dark'ness Dementia Raven Way 
-and I have long ebony black hair -that's how I got my name- 
-with purple streaks and red tips that reaches my mid-back 
-and icy blue eyes like limpid tears 
-and a lot of people tell me I look like Amy Lee 
--AN: if u don't know who she is get da hell out of here!-. 
-I'm not related to Gerard Way but I wish I was because he's a major fucking hottie. 
-I'm a vampire but my teeth are straight and white. I have pale white skin. 
-I'm also a witch, and I go to a magic school called Hogwarts in England 
-where I'm in the seventh year -I'm seventeen-. 
-I'm a goth -in case you couldn't tell- and I wear mostly black. 
-I love Hot Topic and I buy all my clothes from there. 
-For example today I was wearing a black corset with matching lace around it 
-and a black leather miniskirt, pink fishnets and black combat boots. 
-I was wearing black lipstick, white foundation, black eyeliner and red eye shadow. 
-I was walking outside Hogwarts. It was snowing and raining so there was no sun, 
-which I was very happy about. A lot of preps stared at me. I put up my middle 
-finger at them."""
-
-ALPHABET_INDEX = {
-    "a": 0,
-    "b": 1,
-    "c": 2,
-    "d": 3,
-    "e": 4, 
-    "f": 5, 
-    "g": 6, 
-    "h": 7,
-    "i": 8,
-    "j": 9,
-    "k": 10,
-    "l": 11,
-    "m": 12,
-    "n": 13,
-    "o": 14,
-    "p": 15,
-    "q": 16,
-    "r": 17,
-    "s": 18,
-    "t": 19,
-    "u": 20,
-    "v": 21,
-    "w": 22,
-    "x": 23,
-    "y": 24,
-    "z": 25
-}
-
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-
-TEST_KEYS = ["key", "once upon a midnight dreary", "the quick brown fox jumps over the lazy dog"]
+ALPHABET_INDEX = {
+    "a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, 
+    "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12,
+    "n": 13, "o": 14, "p": 15, "q": 16, "r": 17,
+    "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23,
+    "y": 24, "z": 25
+}
 
 BABBINGTON_ALPHABET = {
     "a":"\N{COPTIC CAPITAL LETTER O}", "b":"\N{OLD HUNGARIAN CAPITAL LETTER EGY}",
@@ -81,15 +38,106 @@ BABBINGTON_ALPHABET = {
     "send":"\N{COPTIC CAPITAL LETTER OLD COPTIC HAT}", "receive":"\N{ARMENIAN SMALL LETTER FEH}", 
     "pray":"\N{GEORGIAN CAPITAL LETTER HE}"
     }
+ATBASH_ALPHABET = {
+    "a":"z", "b":"y", "c":"x", "d":"w", "e":"v", "f":"u",
+    "g":"t", "h":"s", "i":"r", "j":"q", "k":"p", "l":"o",
+    "m":"n", "n":"m", "o":"l", "p":"k", "q":"j", "r":"i",
+    "s":"h", "t":"g", "u":"f", "v":"e", "w":"d", "x":"c", 
+    "y":"b", "z":"a"
+}
+BACONIAN_ALPHABET = {
+    "a":"aaaaa", "b":"aaaab", "c":"aaaba", "d":"aaabb", 
+    "e":"aabaa", "f":"aabab", "g":"aabba", "h":"aabbb", 
+    "i":"abaaa", "j":"abaaa", "k":"abaab", "l":"ababa",
+    "m":"ababb", "n":"abbaa", "o":"abbab", "p":"abbba", 
+    "q":"abbbb", "r":"baaaa", "s":"baaab", "t":"baaba", 
+    "u":"baabb", "v":"baabb", "w":"babaa", "x":"babab",
+    "y":"babba", "z":"babbb"
+}
+
+"""#TODO: finish these alphabets
+PIGPEN_ALPHABET = {}
+MUSIC_ALPHABET = {}
+BILL_CIPHER_ALPHA = {}
+THE_AUTHOR_ALPHA = {}
+FUTURAMA_ALPHA = {}
+TICK_TACK_TOE_ALPHA = {}
+WINDOW_ALPHA = {}
+LUNAR_ALPHABEET = {}"""
 
 WHEELS = [
-    "ekmflgdqvzntowyhxuspaibrcj", "ajdksiruxblhwtmcqgznpyfvoe",
-    "bdfhjlcprtxvznyeiwgakmusqo", "esovpzjayquirhxlnftgkdcmwb",
-    "vzbrgityupsdnhlxawmjqofeck", "ejmzalyxvbwfcrquontspikhgd",
-    "yruhqsldpxngokmiebfzcwvjat", "fvpjiaoyedrzxwgctkuqsbnmhl"
+    "jfaebytdvlhgnpczxwqirsmuok", "wksrbqyzfeuanpvmcohigjdxtl", "tlaismyknxgrwbpfjeuozqhdcv", "tnwxryauzhpsfdoqvkcbielgmj", 
+    "xycnwstfbzahopkruidqglvjem", "vcadtmpbuhigjswqxyznkfrole", "dxeufwhmaoqkvjscpgrynilbzt", "ryslugqfnmxzvpkabohdceijwt",
+    "psrefaytjobuxilnmzgkdwcqhv", "hygftuwmevlzcdapxqroknisjb", "iwvcodsyjzngmltqrpubahxkef", "dmgyrzxwqalpeuvijfbnscohkt",
+    "tnqzdojgbyivfwhxrlakeumscp", "dhxiavjnzklbgfecpwyroqumst", "pchuoelxkntfbgijzdswmavqyr", "exwqlvpgucthmjrzoifydskban",
+    "kbnuxpljworyfqtszmveiacdgh", "uwbgjtkxncpvrsalzeqimyhdfo", "hopmxgibdftcqzslaurkejywnv", "xdymprevolqwaufctzjngibshk", 
+    "epysugkifzhbnjqmoctxrwvlad", "exijtdmscogwzrlpyuqnafbhkv", "fclmajqzedyvuxnortkgpiwshb", "zkcmtevhfbixqlpywaojnrgsud", 
+    "rcolguhfsjytpwxmneiavzqdkb", "aojifngptrxbeylcuskmzhvqwd", "ughltbjmdriqkeyawxfszvocpn", "xyqjdlikfzpgnrbhacemvtwuos", 
+    "iqkjxyntfsreczmbdolgavuphw", "yughlqxrtozbdjmfkcnspveiaw", "bnymkioxjtucsvrqwpfhgledza", "oclypewxqriusvhgfnkbtjzadm", 
+    "bespdlhjrnvoqmzkfawcxgutyi", "palmnjcdqibhugxektsfwzvryo", "tyfrgxbqpejiavmschuozlndkw", "bodvnumrfekysgqctwpxhiljza", 
+    "xmkqarhifewgyobcljutvpsndz", "nzclivqrpaejsgkymfuhdobwxt", "vlpjhfrkgybcemzowiqdtunsax", "rydcushlnpwqgzaxktjeivmbof", 
+    "chvqerxwjtasilnkobudfpgmzy", "hpbqifmarzjxtdecknlogswyvu", "pizovbrjxyncltawgmdqsfhkeu", "rykcjtlnquasxvzphdogwibmef", 
+    "lwspuxvkrhzotnbfiymaqgdcej", "dnwypagbvkjzfmixceqsutrlho", "jdzvunaomgwbyfxrtekpiqhslc", "pbwkxgtcdnqfersmjoyhivazul", 
+    "csxilzuekqfntdojygrbmpvahw", "nkytjbswumriazgdlechqvofxp", 
     ]
-TEST_WHEELS = [WHEELS[0], WHEELS[1], WHEELS[2]]
-TEST_PLUGS = ["nk", "xo", "me", "ju", "fl", "ps"]
+PLUGS = [
+    'sf', 'ha', 'af', 'lt', 'bj', 'ma', 'ys', 'pq', 'jq', 'iy', 'pd', 'jm', 'oo', 'ia', 'gb', 'mb', 'rw', 'xt', 'yy', 'gh', 'kq', 
+    'zi', 'po', 'dl', 'wy', 'ni', 'wj', 'hd', 'wl', 'eq', 'me', 'fd', 'ze', 'fh', 'vb', 'nk', 'xh', 'fp', 'ng', 'el', 'nf', 'xc', 
+    'lv', 'kv', 'kb', 'rg', 'cm', 'mk', 'ed', 'ye', 'bg', 'ya', 'ao', 'ja', 'nu', 'kd', 'dj', 'im', 'fi', 'to', 'uf', 'ee', 'as', 
+    'kl', 'st', 'bq', 'ew', 'hj', 'cz', 'gl', 'ts', 'cv', 'yh', 'bt', 'dm', 'ex', 'jy', 'ih', 'wk', 'yo', 'hn', 'rd', 'ud', 'bk', 
+    'bb', 'gf', 'ay', 'uv', 'pp', 'ap', 'kz', 'zy', 'fr', 'kk', 'tr', 'kj', 'xb', 'fc', 'cd', 'ax', 'dv', 'ra', 'xj', 'jd', 'qx', 
+    'yb', 'ir', 'it', 'zc', 'bx', 'uc', 'by', 'mr', 'xd', 'jf', 'yt', 'ch', 'mg', 'yj', 'cr', 'qp', 'xy', 'dt', 'dh', 'yq', 'ns', 
+    'qv', 'ct', 'qe', 'fe', 'xi', 'cf', 'wv', 'zz', 'gg', 'ca', 'hr', 'ko', 'bm', 'px', 'qw', 'ur', 'lg', 'kr', 'ml', 'rt', 'pl', 
+    'nz', 'mf', 'ut', 'xk', 'la', 'hi', 'hg', 'gt', 'rj', 'wf', 'xq', 'zw', 'mm', 'wc', 'vm', 'ym', 'em', 'mp', 'iw', 'pf', 'll', 
+    'jp', 'sr', 'jb', 'ai', 'mo', 'vu', 'nn', 'cu', 'nj', 'jr', 'hl', 'bl', 'ev', 'vi', 'td', 'gy', 'ne', 'oq', 'lo', 'mq', 'hw',
+    'je', 'xg', 'er', 'or', 'hy', 'sl', 'df', 'tc', 'pn', 'et', 'sg', 'us', 'xf', 'rq', 'tk', 'jx', 'zs', 'ta', 'am', 'ru', 'xe', 
+    'ba', 'da', 'tx', 'au', 'pm', 'rn', 'dr', 'gx', 'rl', 'on', 'vt', 'hc', 'dn', 'vx', 'ar', 'nv', 'qg', 'uo', 'gm', 'lk', 'yr',
+    'di', 'lz', 'he', 'ln', 'cj', 'pz', 'ij', 'eb', 'mj', 'pk', 'gw', 'ps', 'vr', 'jl', 'il', 'br', 'md', 'vz', 'jw', 'bs', 'du', 
+    'nc', 'uq', 'zf', 'hk', 'tm', 'hz', 'qj', 'db', 'zq', 'en', 'ht', 'dw', 'lm', 'jk', 'zr', 'yf', 'ov', 'ho', 'rh', 'ua', 'pt', 
+    'pa', 'wx', 'ig', 'dy', 'mu', 'pb', 'qt', 'dk', 'kc', 'wr', 'fx', 'kh', 'na', 'jv', 'hq', 'hu', 'fn', 'un', 'xx', 'lx', 'ki', 
+    'xw', 'tp', 'vl', 'ji', 'tg', 'qa', 'zd', 'op', 'rc', 'wi', 'cc', 'uj', 'if', 'tt', 'vy', 'jj', 'qd', 'ak', 'up', 'za', 'av', 
+    'fb', 'vg', 'rm', 'bi', 'gp', 'kp', 'bd', 'ub', 'sd', 'te', 'zv', 'ms', 'wd', 'yx', 'oc', 'oa', 'ws', 'fy', 'iu', 've', 'su', 
+    'qu', 'sb', 'ic', 'dx', 're', 'ec', 'jn', 'wh', 'ka', 'qm', 'at', 'ls', 'fo', 'oh', 'ro', 'zh', 'is', 'rb', 'dc', 'pc', 'gq', 
+    'fg', 'vh', 'jz', 'aq', 'yk', 'fa', 'ug', 'lc', 'ci', 'mx', 'ah', 'nb', 'ie', 'cq', 'ix', 'pj', 'ti', 'dp', 'lf', 'dd', 'np', 
+    'id', 'le', 'ke', 'ii', 'qc', 'bc', 'nx', 'fz', 'dg', 'eo', 'ku', 'tw', 'lu', 'tn', 'hx', 'xr', 'kw', 'bn', 'sq', 'lb', 'cn', 
+    'ga', 'qo', 'ae', 'qs', 'of', 'lq', 'xu', 'rv', 'qn', 'yw', 'ql', 'vo', 'fv', 'ww', 'wn', 'fq', 'vp', 'cb', 'eg', 'ei', 'tf',
+    'ox', 'aj', 'ek', 'fm', 'ea', 'vq', 'ab', 'cs', 'pg', 'mz', 'pu', 'xn', 'ej', 'pe', 'uw', 'rs', 'tq', 'cw', 'nl', 'jh', 'zk', 
+    'fl', 'ou', 'no', 'oy', 'bv', 'bh', 'mt', 'uz', 'pw', 'sv', 'zl', 'qy', 'yl', 'bp', 'lr', 'xa', 'ri', 'zo', 'de', 'cg', 'ot', 
+    'mw', 'rz', 'nd', 'li', 'hv', 'ce', 'dq', 'sp', 'wq', 'zp', 'fu', 'nw', 'lp', 'tv', 'zx', 'cl', 'ue', 'zn', 'tu', 'xl', 'gr', 
+    'nm', 'xp', 'ks', 'eu', 'gn', 'yp', 'yv', 'km', 'oz', 'zt', 'ly', 'ft', 'hs', 'qr', 'jc', 'xs', 'tl', 'eh', 'io', 'sx', 'fk', 
+    'kn', 'pr', 'qz', 'gc', 'jo', 'ph', 'sw', 'rk', 'vc', 'es', 'qf', 'ag', 'an', 'fs', 'yn', 'xz', 'do', 'be', 'um', 'sa', 'qh', 
+    'zm', 'ep', 'tz', 'zj', 'cp', 'ff', 'mh', 'wt', 'yd', 'zu', 'si', 'tb', 'jt', 'sy', 'vs', 'vn', 'vv', 'kt', 'al', 'jg', 'ac', 
+    'rp', 'uk', 'sk', 'zg', 'wb', 'vk', 'wg', 'bf', 'uu', 'aa', 'ib', 'uh', 'in', 'zb', 'wp', 'ey', 'oe', 'ad', 'gv', 'hp', 'sz', 
+    'ju', 'xm', 'ob', 'vd', 'ui', 'yu', 'co', 'hf', 'yz', 'oi', 'wo', 'vf', 'ef', 'az', 'hm', 'bz', 'pi', 'nt', 'oj', 'hb', 'lh', 
+    'cy', 'mv', 'dz', 'qi', 'th', 'gd', 'nh', 'sj', 'iv', 'va', 'wu', 'om', 'bw', 'ny', 'yc', 'iq', 'js', 'iz', 'ol', 'gz', 'nr', 
+    'od', 'xv', 'mn', 'kx', 'yg', 'se', 'gk', 'ds', 'we', 'sc', 'rf', 'fj', 'yi', 'my', 'rr', 'so', 'ss', 'gj', 'sm', 'kf', 'pv', 
+    'ck', 'cx', 'ok', 'hh', 'ip', 'bu', 'vj', 'lw', 'uy', 'sn', 'nq', 'og', 'ul', 'qq', 'gu', 'ld', 'mc', 'bo', 'vw', 'os', 'mi', 
+    'gs', 'ux', 'gi', 'kg', 'qk', 'fw', 'wm', 'rx', 'ow', 'aw', 'qb', 'ty', 'ik', 'tj', 'go', 'wz', 'py', 'ry', 'sh', 'ez', 'xo', 
+    'ge', 'wa', 'ky', 'lj'
+    ]
+
+
+TEST_WHEELS = WHEELS[:3]
+TEST_PLUGS = PLUGS[:6]
+TEST_KEYS = ["key", "once upon a midnight dreary", "the quick brown fox jumps over the lazy dog"]
+TEST_TEXT = """Hi my name is Ebony Dark'ness Dementia Raven Way 
+and I have long ebony black hair -that's how I got my name- 
+with purple streaks and red tips that reaches my mid-back 
+and icy blue eyes like limpid tears 
+and a lot of people tell me I look like Amy Lee 
+-AN: if u don't know who she is get da hell out of here!-. 
+I'm not related to Gerard Way but I wish I was because he's a major fucking hottie. 
+I'm a vampire but my teeth are straight and white. I have pale white skin. 
+I'm also a witch, and I go to a magic school called Hogwarts in England 
+where I'm in the seventh year -I'm seventeen-. 
+I'm a goth -in case you couldn't tell- and I wear mostly black. 
+I love Hot Topic and I buy all my clothes from there. 
+For example today I was wearing a black corset with matching lace around it 
+and a black leather miniskirt, pink fishnets and black combat boots. 
+I was wearing black lipstick, white foundation, black eyeliner and red eye shadow. 
+I was walking outside Hogwarts. It was snowing and raining so there was no sun, 
+which I was very happy about. A lot of preps stared at me. I put up my middle 
+finger at them."""
 
 
 def simplify_plaintext(plaintext):
@@ -197,7 +245,7 @@ def enigma_machine(plaintext, swaps, wheels):
         the same for the third
 
     >>> enigma_machine("Hello World", TEST_PLUGS, TEST_WHEELS)
-    'mxsljdbibd'
+    'yyimejwjdd'
 
     TODO: something about a reflector so decoding is the same process as encoding
 
@@ -257,6 +305,27 @@ def enigma_machine(plaintext, swaps, wheels):
         ciphertext += cipher
 
     return ciphertext
+
+
+'''##TODO: encoders to implement
+def binary_conversion(plaintext):
+    """given a plaintext, convert the text to binary"""
+
+def autokey_cipher(plaintext, key):
+    """encodes a plaintext with the autokey cipher
+    
+    keys are placed over top the plaintext, then plaintext is repeated afterwards
+    ciphertext is encoded using the alphabet index of the corresponding key(+plaintext) char"""
+
+def beaufort_cipher(plaintext, key):
+    """encodes a plainext with a beaufort cipher
+    
+    keys are repeated to the length of plaintext, 
+    then each plaintext vchar is encoded using 
+    the alphabet index of the corresponding key, but in reverse
+    """
+
+def zodiac_cipher(plaintext):'''
 
 
 if __name__ == '__main__':
