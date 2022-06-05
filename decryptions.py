@@ -1,8 +1,5 @@
-from os import remove
-from random import randint
-
-from encoders import TEST_TEXT, ALPHABET, BABBINGTON_ALPHABET, TEST_KEYS
-from encoders import simplify_plaintext, subsitution_cipher, shift_cipher, vigenere_cipher
+from encoders import ALPHABET, BABBINGTON_ALPHABET
+from encoders import subsitution_cipher, shift_cipher, vigenere_cipher
 
 
 LETTER_USAGE = {
@@ -136,6 +133,7 @@ def finds_repeat_correspondance(ciphertext, nchars):
     return [ngrams, ciphertext]
 
 
+##TODO: as interface changes to a full web app this will serve as bluprint and then be replaced
 def subsitution_solve(cipher_text, cipher_alphabet):
     '''interfaces with users to replace common characters with common used letters
 
@@ -167,7 +165,6 @@ def subsitution_solve(cipher_text, cipher_alphabet):
             sub_letter = MOST_USED[MOST_USED.index(sub_letter) + 1]
     
     return solve
-
 
 def shift_solve(cipher_text):
     '''compares cipher character usage with true usage, finds the shift key

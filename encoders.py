@@ -1,4 +1,3 @@
-from mimetypes import init
 from operator import index
 
 TEST_TEXT = """Hi my name is Ebony Dark'ness Dementia Raven Way 
