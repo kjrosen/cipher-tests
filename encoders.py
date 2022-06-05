@@ -19,8 +19,40 @@ I was wearing black lipstick, white foundation, black eyeliner and red eye shado
 I was walking outside Hogwarts. It was snowing and raining so there was no sun, 
 which I was very happy about. A lot of preps stared at me. I put up my middle 
 finger at them."""
+
+ALPHABET_INDEX = {
+    "a": 0,
+    "b": 1,
+    "c": 2,
+    "d": 3,
+    "e": 4, 
+    "f": 5, 
+    "g": 6, 
+    "h": 7,
+    "i": 8,
+    "j": 9,
+    "k": 10,
+    "l": 11,
+    "m": 12,
+    "n": 13,
+    "o": 14,
+    "p": 15,
+    "q": 16,
+    "r": 17,
+    "s": 18,
+    "t": 19,
+    "u": 20,
+    "v": 21,
+    "w": 22,
+    "x": 23,
+    "y": 24,
+    "z": 25
+}
+
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+
 TEST_KEYS = ["key", "once upon a midnight dreary", "the quick brown fox jumps over the lazy dog"]
+
 BABBINGTON_ALPHABET = {
     "a":"\N{COPTIC CAPITAL LETTER O}", "b":"\N{OLD HUNGARIAN CAPITAL LETTER EGY}",
     "c":"\N{OLD HUNGARIAN CAPITAL LETTER ES}", "d":"\N{COPTIC CAPITAL LETTER OLD COPTIC OOU}",
@@ -50,166 +82,187 @@ BABBINGTON_ALPHABET = {
     "send":"\N{COPTIC CAPITAL LETTER OLD COPTIC HAT}", "receive":"\N{ARMENIAN SMALL LETTER FEH}", 
     "pray":"\N{GEORGIAN CAPITAL LETTER HE}"
     }
+
 WHEELS = [
-    "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE", 
-    "BDFHJLCPRTXVZNYEIWGAKMUSQO", "ESOVPZJAYQUIRHXLNFTGKDCMWB", 
-    "VZBRGITYUPSDNHLXAWMJQOFECK", "EJMZALYXVBWFCRQUONTSPIKHGD",
-    "YRUHQSLDPXNGOKMIEBFZCWVJAT", "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+    "ekmflgdqvzntowyhxuspaibrcj", "ajdksiruxblhwtmcqgznpyfvoe",
+    "bdfhjlcprtxvznyeiwgakmusqo", "esovpzjayquirhxlnftgkdcmwb",
+    "vzbrgityupsdnhlxawmjqofeck", "ejmzalyxvbwfcrquontspikhgd",
+    "yruhqsldpxngokmiebfzcwvjat", "fvpjiaoyedrzxwgctkuqsbnmhl"
     ]
 TEST_WHEELS = [WHEELS[0], WHEELS[1], WHEELS[2]]
 TEST_PLUGS = ["nk", "xo", "me", "ju", "fl", "ps"]
 
 
-def simplify_plaintext(plain_text):
-    '''removes spaces and punctuation from a plain text for better encryption'''
-    plain_text = plain_text.replace(" ","")##remove spaces from the plaintext
-    plain_text = plain_text.replace(".","")
-    plain_text = plain_text.replace(",","")
-    plain_text = plain_text.replace("'","")
-    plain_text = plain_text.replace("-","")
-    plain_text = plain_text.replace("!","")
-    plain_text = plain_text.replace("?","")
-    plain_text = plain_text.replace("\n","")
-    plain_text = plain_text.replace(":", "")
-
-    return plain_text.lower()
-
-
-def subsitution_cipher(plain_text,cipher_alphabet):
-    '''encodes a given text with a given cipher
+def simplify_plaintext(plaintext):
+    """removes spaces and punctuation from a plain text for better encryption
     
-    takes a string text and an alphabet dictionary
-    returns a string stext
-    '''
+    >>> simplify_plaintext("`~!@#$%^&*()_+=-\|]}[{;:'<,>.?/Hello World")
+    'helloworld'
+
+    """
+
+    punctuation = ",./?><;':[]\{}|=-)(*&^%$#@!~`_+\n \t"
+    for punct in punctuation:
+        plaintext = plaintext.replace(punct, "")
+    
+    plaintext = plaintext.replace('"','')
+
+    return plaintext.lower()
+
+
+def subsitution_cipher(plaintext, cipher_alphabet):
+    """encodes a given plaintext with a cipher alphabet, returns a ciphertext string
+    
+    cipher_alphabets are dictionaries with letters and/or words as keys, cipher chars as values
+    
+    >>> subsitution_cipher("Hello world", BABBINGTON_ALPHABET)
+    'ⲱⲀ𐕚𐕚𐳻 𐳻Բ𐕚Ⲿ'
+
+    """
+
     ##first replace the full words in the plain text
-    i = 0
-    cipher_text = ""
-    plain_words = plain_text.split()
+    ciphertext = ""
+    plain_words = plaintext.split()
+
     for word in plain_words:
-        no_punct = simplify_plaintext(word)##remove punctuation temporarily
-        if no_punct in cipher_alphabet:
-            plain_words[i] = cipher_alphabet[no_punct]
-        
-        ##add each individual character to a cipher_text
-        for char in word:
-            cipher_text += char
-        i += 1
+        simple_word = simplify_plaintext(word)##remove punctuation AFTER splitting 
 
-    cipher_text = simplify_plaintext(cipher_text)##just in case
+        if simple_word in cipher_alphabet:##check for full word in the cipher alphabet
+            ciphertext += cipher_alphabet[simple_word]
+
+        else:
+            for char in simple_word:##if not a keyword replace each letter
+                ciphertext += cipher_alphabet[char]
+
+    return ciphertext
+
+
+def shift_cipher(plaintext, shift):
+    """encodes a given plaintext n-number of letters shifted down the alphabet
     
-    ##then iterate through each character, replacing each letter for the corresponding 
-    for char in cipher_text:
-        try:
-            cipher_text = cipher_text.replace(char,cipher_alphabet[char])
-        except:
-            continue
-
-    return cipher_text
-
-
-def shift_cipher(plain_text,shift):
-    '''encodes a given text shifted down the alphabet a given number
+    >>> shift_cipher("Hello World", 6)
+    'nkrrucuxrj'
     
-    takes a string of plain text, and an integer to shift over
-    returns a cipher text encoded with the shifted alphabet'''
+    """
 
-    cipher_text = ""##create a coded variable
+    ciphertext = ""
 
-    plain_text = simplify_plaintext(plain_text)##removes unnecessary characters
-    ##iterate through the input text
-    ##match each character with its alphabet letter, matched to the index
-    ##add the value at the index + shift to the code variable
-    ##allow for looping through the alphabet
-    for char in plain_text:
-        letter = ALPHABET.index(char)
-        try:
-            cipher_text += ALPHABET[letter + shift]
-        except:
-            cipher_text += ALPHABET[letter + shift - 26]
+    plaintext = simplify_plaintext(plaintext) 
+
+    for char in plaintext:
+        char_idx = ALPHABET_INDEX[char]
+
+        if char_idx + shift > 25:
+            ciphertext += ALPHABET[char_idx + shift - 26]
+
+        else:
+            ciphertext += ALPHABET[char_idx + shift]            
     
-    return cipher_text
+    return ciphertext
 
 
-def vigenere_cipher(plain_text,key):
-    '''encodes a given text with a rotating shift cipher based on a given key
+def vigenere_cipher(plaintext, key):
+    """encodes a given plaintext with a rotating shift cipher based on the alphabetIdx of a given key
     
-    takes a string plain text and a string key
-    returns a string cipher text'''
+    repeats the key over the length of the plaintext, giving each char in plaintext a coresponding key char
+    shift each char using the index of the key char as the shift number
 
-    ##rid both plaintext and key of extraneous characters
-    plain_text = simplify_plaintext(plain_text)
+    >>> vigenere_cipher("Hello World", "test")
+    'aidehagkeh'
+    
+    """
+
+    plaintext = simplify_plaintext(plaintext)
     key = simplify_plaintext(key)
 
-    ##repeat the key over the plaintext forever: each plainchar has its own shift key
-    full_key = key
-    while len(full_key) < len(plain_text):
-        full_key += key
+    key = key * len(plaintext)
 
-    i = 0
-    cipher_text = ""
-    ##run a standard shift cipher over each individual character shifted to the keychar 
-    for char in plain_text:
-        cipher_text += shift_cipher(char, ALPHABET.index(full_key[i]))
-        i += 1
+    ciphertext = ""
+    for idx, char in enumerate(plaintext):
+        ciphertext += shift_cipher(char, ALPHABET_INDEX[key[idx]])
     
-    return cipher_text
+    return ciphertext
 
 
-def enigma_machine(plain_text,swaps,wheels):
-    '''
-    each swap represents two letters that swap out each other's input
-    each rotator represents a sub cipher
+def enigma_machine(plaintext, swaps, wheels):
+    """encodes a given plaintext via an enigma machine
+
+    first letters from the swaps trade places in the plaintext
+    second each character goes through a wheel, shifting according to the letter on it
+        same for the second wheel
+        same for the third wheel
     
-    after each letter, rotator1 += 1
-    when rotator1 goes all the way around once, rotator2 starts shifting
-    when rotator2 goes all the way around once, rotator3 starts shifting
+    the first wheel rotates one degree for the next character
+    when the first wheel rotates 26x
+        the second wheel begins rotating
+        the same for the third
+
+    >>> enigma_machine("Hello World", TEST_PLUGS, TEST_WHEELS)
+    'mxsljdbibd'
 
     TODO: something about a reflector so decoding is the same process as encoding
-    '''
-    ##simplify plaintext to get ride of annoyances
-    plain_text = simplify_plaintext(plain_text)
-    cipher_text = plain_text
 
-    # swapAlpha = ALPHABET[:]
-    ##deal with the pure swaps first. 
+    """
+
+    swapedtext = simplify_plaintext(plaintext)
+    ciphertext = ""
+
     # Use .upper() to ensure the second swap won't reswap first
     for pair in swaps:
-        cipher_text = cipher_text.replace(pair[0], pair[1].upper())
-        cipher_text = cipher_text.replace(pair[1], pair[0].upper())
+        swapedtext = swapedtext.replace(pair[0], pair[1].upper())
+        swapedtext = swapedtext.replace(pair[1], pair[0].upper())
+
+    swapedtext = swapedtext.lower()
+
 
     rotate1_num = 0 
-    rotate2_num = 0
-    rotate3_num = 0
+    rotate2_num = 26
+    rotate3_num = 26
 
-    '''
-    when a goes through, it should get converted into wheel0's corresponding a
-    then it should get converted into wheel2's corresponding whatever-wheel0-turned-a-into
-    then it should get converted into wheel3's corresponding whatever-wheel1-turned-a-into
-    then wheel0 should shift down by 1
-    '''
+    def rotate_wheel(wheel):
+        extra = wheel[0]
+        wheel = wheel[1:]
 
-    wheel_alphas = {}
-    for wheel in wheels:
-
-        alpha = f"wheel{wheels.index(wheel)}"
-        wheel_alphas[alpha] = {}
-        
-        i = 0
-        for letter in ALPHABET:
-            wheel_alphas[alpha][letter] = wheel[i]
-            i += 1
-
-    cipher_text = list(cipher_text)
-    for text_i in range(len(cipher_text)):
-        for wheel in range(len(wheel_alphas)):
-            cipher_text[text_i] = subsitution_cipher(
-                cipher_text[text_i], wheel_alphas[f"wheel{wheel}"])
-
-    # print(wheel_alphas)
-    return "".join(cipher_text)
-
-print(enigma_machine(TEST_TEXT, TEST_PLUGS, TEST_WHEELS))
+        return wheel + extra
 
 
+    for char in swapedtext:
+        wheel1 = wheels[0][0]
+        wheel2 = wheels[1][0]
+        wheel3 = wheels[2][0]
 
+        cipher = shift_cipher(char, ALPHABET_INDEX[wheel1])
+        if rotate1_num < 26:
+            wheels[0] = rotate_wheel(wheels[0])
+            rotate1_num += 1
+        elif rotate1_num == 25:
+            rotate1_num = 26
+            rotate2_num = 0
+
+        cipher = shift_cipher(cipher, ALPHABET_INDEX[wheel2])
+        if rotate2_num < 26:
+            wheels[1] = rotate_wheel(wheels[1])
+            rotate2_num += 1
+        elif rotate2_num == 25:
+            rotate2_num = 26
+            rotate3_num = 0
+
+        cipher = shift_cipher(cipher, ALPHABET_INDEX[wheel3])
+        if rotate3_num < 26:
+            wheels[2] = rotate_wheel(wheels[2])
+            rotate3_num += 1
+        elif rotate3_num == 25:
+            rotate3_num = 26
+            rotate1_num = 0
+
+        ciphertext += cipher
+
+    return ciphertext
+
+
+if __name__ == '__main__':
+    import doctest
+
+    if doctest.testmod().failed == 0:
+        print("\n*** ALL TEST PASSED!\n")
     
