@@ -6,37 +6,45 @@
 
 {% block content %}
     <form>
-        <input type="text" id="plaintext">
+        Plaintext:
+        <br>
+        <textarea id="plaintext"></textarea>
+        <br>
         <button id="sub">Subsitution Cipher</button>
         <button id="shift">Shift Cipher</button>
         <button id="vigenere">Vigenere Cipher</button>
         <button id="enigma">Enigma Machine</button>
+        <br>
 
-        <form class="hide subs">
-            To make your own cipher alphabet:
-            Type a plaintext letter or word /
-            Type the cipher replacement
+        <div class="hide subs">
+            To make your own cipher alphabet:<br>
+            Type a plaintext letter or word, =, then type the cipher replacement. Use commas between plaintexts<br>
+            Example: "a=*, b=(, c=^"
+            <br>
             <input type="text" id="cipherAlpha">
+            <button id="customAlpha">Encode</button>
+            <br>
 
             Or pick our one of below cipher alphabets:
+            <br>
             <button id="babbington">Babbington Alphabet</button>
             <button id="atbash">Atbash Alphabet</button>
             <button id="bacon">Baconian Alphabet</button>
-        </form>
+        </div>
 
-        <form class="hide shift">
+        <div class="hide shift">
             Shift each number ___ chararcters?
             <input type="number">
             <button>Encode</button>
-        </form>
+        </div>
 
-        <form class="hide vigenere">
+        <div class="hide vigenere">
             What's your key?
             <input type="text">
             <button>Encode</button>
-        </form>
+        </div>
 
-        <form class="hide enigma">
+        <div class="hide enigma">
             <!-- repeat this 6 times for all swaps -->
             Swaps:
             {% for letter in alphabet %} 
@@ -52,7 +60,7 @@
                     </option>
                 {% endfor %}
             </select>
-        </form>
+        </div>
         
     </form>
 {% endblock %}
