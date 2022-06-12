@@ -9,6 +9,8 @@ const shiftOpts = document.getElementById('shiftOpts');
 const vigOpts = document.getElementById('vigOpts'); 
 const enigOpts = document.getElementById('enigOpts'); 
 
+const subsitutionSubmits = document.querySelectorAll('.subSub');
+
 for (const button of cipherButtons) {
     button.addEventListener('click', (evt) => {
         evt.preventDefault();
@@ -27,3 +29,12 @@ for (const button of cipherButtons) {
 
     });
 }
+
+for (const button of subsitutionSubmits) {
+    button.addEventListener('click', (evt) => {
+        evt.preventDefault();
+
+        
+    });
+}
+
