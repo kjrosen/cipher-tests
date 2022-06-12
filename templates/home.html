@@ -10,13 +10,13 @@
         <br>
         <textarea id="plaintext"></textarea>
         <br>
-        <button id="sub">Subsitution Cipher</button>
-        <button id="shift">Shift Cipher</button>
-        <button id="vigenere">Vigenere Cipher</button>
-        <button id="enigma">Enigma Machine</button>
+        <button class="cipher sub">Subsitution Cipher</button>
+        <button class="cipher shift">Shift Cipher</button>
+        <button class="cipher vig">Vigenere Cipher</button>
+        <button class="cipher enig">Enigma Machine</button>
         <br>
 
-        <div class="hide subs">
+        <div class="hide" id="subOpts">
             To make your own cipher alphabet:<br>
             Type a plaintext letter or word, =, then type the cipher replacement. Use commas between plaintexts<br>
             Example: "a=*, b=(, c=^"
@@ -32,19 +32,19 @@
             <button id="bacon">Baconian Alphabet</button>
         </div>
 
-        <div class="hide shift">
+        <div class="hide" id="shiftOpts">
             Shift each number ___ chararcters?
             <input type="number">
             <button>Encode</button>
         </div>
 
-        <div class="hide vigenere">
+        <div class="hide" id="vigOpts">
             What's your key?
             <input type="text">
             <button>Encode</button>
         </div>
 
-        <div class="hide enigma">
+        <div class="hide" id="enigOpts">
             <!-- repeat this 6 times for all swaps -->
             Swaps:
             {% for letter in alphabet %} 
